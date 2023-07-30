@@ -5,6 +5,7 @@ import { AdapterUser } from "@auth/core/adapters"
 import GoogleProvider from "next-auth/providers/google";
 import jsonwebtoken from "jsonwebtoken";
 import { JWT } from "next-auth/jwt";
+import { SessionInterface } from "@/common.types";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -31,11 +32,17 @@ export const authOptions: NextAuthOptions = {
 
         // if they dont exist
 
-        return true
+        return true;
       } catch (error) {
         console.log(error);
         return false;
       }
     }
   }
+}
+
+export async function getCurrentUser() {
+  const session = await getServerSession(authOptions) as SessionInterface;
+
+  return session;
 }
